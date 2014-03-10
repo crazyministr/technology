@@ -33,9 +33,6 @@ public class ArrayQueue<E> implements Queue<E> {
      */
     @Override
     public E first() {
-        if (head == size) {
-            head = 0;
-        }
         return queue[head];
     }
 
@@ -62,9 +59,10 @@ public class ArrayQueue<E> implements Queue<E> {
      */
     @Override
     public E poll() {
+        E q = queue[head++];
         if (head == size) {
             head = 0;
         }
-        return queue[head++];
+        return q;
     }
 }
