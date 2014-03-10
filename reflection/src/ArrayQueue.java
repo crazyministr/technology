@@ -36,6 +36,14 @@ public class ArrayQueue<E> implements Queue<E> {
         return queue[head];
     }
 
+    /**
+     * Returns {@code true} if this queue contains the specified element.
+     *
+     * @param s start number of queue
+     * @param f finish number of queue
+     * @param x element whose presence in this queue is to be tested
+     * @return {@code true} if this queue contains the specified element
+     */
     private boolean inside(int s, int f, E x) {
         for (int i = s; i <= f; i++) {
             if (queue[i].equals(x)) {
