@@ -36,6 +36,15 @@ public class ArrayQueue<E> implements Queue<E> {
         return queue[head];
     }
 
+    private boolean inside(int s, int f, E x) {
+        for (int i = s; i <= f; i++) {
+            if (queue[i].equals(x)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     /**
      * Returns {@code true} if this queue contains the specified element.
      *
@@ -44,12 +53,7 @@ public class ArrayQueue<E> implements Queue<E> {
      */
     @Override
     public boolean contains(E elem) {
-        for (E q : queue) {
-            if (q.equals(elem)) {
-                return true;
-            }
-        }
-        return false;
+        return head <= tail ? inside(head, tail, elem) : inside(0, tail, elem) || inside(head, size - 1, elem);
     }
 
     /**
