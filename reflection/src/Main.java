@@ -21,17 +21,26 @@ import java.util.Random;
 
 public class Main {
 
-    private static long run(Class<?> clazz, Object object, int size) throws Exception {
+    /**
+     * Returns operation time of milliseconds
+     *
+     * @param object object of class Queue
+     * @param size count every iteration
+     * @return operation time of milliseconds
+     * @throws Exception
+     */
+    private static long run(Queue object, int size) throws Exception {
+        Class<? extends Queue> clazz = object.getClass();
         Random rnd = new Random();
         long start = System.currentTimeMillis();
         for (int i = 0; i < size; i++) {
-            clazz.getMethod("add", Object.class).invoke(object, rnd.nextInt(13));
+            clazz.getClass().getMethod("add", Object.class).invoke(object, rnd.nextInt(13));
         }
         for (int i = 0; i < size; i++) {
             clazz.getMethod("first").invoke(object);
         }
         for (int i = 0; i < size; i++) {
-            clazz.getMethod("contains", Object.class).invoke(object, rnd.nextInt(13));
+            clazz.getMethod("contains", Queue.class).invoke(object, rnd.nextInt(13));
         }
         for (int i = 0; i < size; i++) {
             clazz.getMethod("poll").invoke(object);
@@ -49,13 +58,13 @@ public class Main {
                 System.out.println("[ERROR] Argument #2 not found");
                 return;
             }
-            Class<?> clazz = ArrayQueue.class;
-            Object object = clazz.getConstructor(int.class).newInstance(Integer.parseInt(args[1]));
-            System.out.println("ArrayQueue: " + run(clazz, object, Integer.parseInt(args[1])) + " ms");
+            Class<? extends Queue> clazz = ArrayQueue.class;
+            Queue<Integer> object = (Queue<Integer>) clazz.getConstructor(int.class).newInstance(Integer.parseInt(args[1]));
+            System.out.println("ArrayQueue: " + run(object, Integer.parseInt(args[1])) + " ms");
         } else if (args[0].equals("CircleQueue")) {
-            Class<?> clazz = CircleQueue.class;
-            Object object = clazz.newInstance();
-            System.out.println("CircleQueue: " + run(clazz, object, 1000000) + " ms");
+            Class<? extends Queue> clazz = CircleQueue.class;
+            Queue<Integer> object = (Queue<Integer>) clazz.newInstance();
+            System.out.println("CircleQueue: " + run(object, 1000000) + " ms");
         } else {
             System.out.println("[ERROR] Class not found");
         }

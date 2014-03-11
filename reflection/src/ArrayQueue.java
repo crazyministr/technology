@@ -1,8 +1,10 @@
+import java.util.NoSuchElementException;
+
 public class ArrayQueue<E> implements Queue<E> {
     private E[] queue;
     private int head;
     private int tail;
-    private int size;
+    private int count;
 
     public ArrayQueue() {
         this(42);
@@ -11,10 +13,9 @@ public class ArrayQueue<E> implements Queue<E> {
     public ArrayQueue(int size) {
         head = 0;
         tail = 0;
-        this.size = size;
+        count = 0;
         queue = (E[]) new Object[size];
     }
-
 
     /**
      * Appends the element to the end of this queue
@@ -22,10 +23,11 @@ public class ArrayQueue<E> implements Queue<E> {
      */
     @Override
     public void add(E elem) {
-        queue[tail++] = elem;
-        if (tail == size) {
-            tail = 0;
+        if (count == queue.length) {
+            throw new IndexOutOfBoundsException("Queue full");
         }
+        queue[tail] = elem;
+        tail = (tail + 1) % queue.length;
     }
 
     /**
@@ -33,6 +35,9 @@ public class ArrayQueue<E> implements Queue<E> {
      */
     @Override
     public E first() {
+        if (empty()) {
+            throw new NoSuchElementException("Queue is empty");
+        }
         return queue[head];
     }
 
@@ -61,7 +66,7 @@ public class ArrayQueue<E> implements Queue<E> {
      */
     @Override
     public boolean contains(E elem) {
-        return head <= tail ? inside(head, tail, elem) : inside(0, tail, elem) || inside(head, size - 1, elem);
+        return head <= tail ? inside(head, tail, elem) : inside(0, tail, elem) || inside(head, queue.length - 1, elem);
     }
 
     /**
@@ -71,10 +76,18 @@ public class ArrayQueue<E> implements Queue<E> {
      */
     @Override
     public E poll() {
-        E q = queue[head++];
-        if (head == size) {
-            head = 0;
+        if (empty()) {
+            throw new NoSuchElementException("Queue is empty");
         }
+        E q = queue[head];
+        head = (head + 1) % queue.length;
         return q;
+    }
+
+    /**
+     * @return {@code true} if this queue is empty
+     */
+    private boolean empty() {
+        return count == 0;
     }
 }

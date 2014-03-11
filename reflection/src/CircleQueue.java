@@ -1,8 +1,36 @@
 import java.util.NoSuchElementException;
 
 public class CircleQueue<E> implements Queue<E> {
-    private Node<E> first = null;
-    private Node<E> last = null;
+    private final int defaultSize = 42;
+    private E[] queue;
+    private int head;
+    private int tail;
+    private int count = 0;
+
+    public CircleQueue() {
+        this(42);
+    }
+
+    public CircleQueue(int size) {
+        head = 0;
+        tail = 0;
+        count = 0;
+        queue = (E[]) new Object[size];
+    }
+
+    /**
+     * Creates a new array to store the contents of the queue with twice the capacity of the old one.
+     */
+    private void resize() {
+        E[] newArray = (E[]) new Object[queue.length << 1];
+        for (int i = 0; i < count; i++) {
+            newArray[i] = queue[head];
+            head = (head + 1) % queue.length;
+        }
+        head = 0;
+        tail = count;
+        queue = newArray;
+    }
 
     /**
      * Appends the element to the end of this queue
@@ -10,14 +38,12 @@ public class CircleQueue<E> implements Queue<E> {
      */
     @Override
     public void add(E elem) {
-        final Node<E> l = last;
-        final Node<E> newNode = new Node<E>(l, elem, null);
-        last = newNode;
-        if (l == null) {
-            first = newNode;
-        } else {
-            l.next = newNode;
+        if (count == queue.length) {
+            resize();
         }
+        queue[tail] = elem;
+        tail = (tail + 1) % queue.length;
+        count++;
     }
 
     /**
@@ -26,10 +52,27 @@ public class CircleQueue<E> implements Queue<E> {
      */
     @Override
     public E first() {
-        if (first == null) {
-            throw new NoSuchElementException();
+        if (empty()) {
+            throw new NoSuchElementException("Queue is empty");
         }
-        return first.item;
+        return queue[head];
+    }
+
+    /**
+     * Returns {@code true} if this queue contains the specified element.
+     *
+     * @param s start number of queue
+     * @param f finish number of queue
+     * @param x element whose presence in this queue is to be tested
+     * @return {@code true} if this queue contains the specified element
+     */
+    private boolean inside(int s, int f, E x) {
+        for (int i = s; i <= f; i++) {
+            if (queue[i].equals(x)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -40,12 +83,7 @@ public class CircleQueue<E> implements Queue<E> {
      */
     @Override
     public boolean contains(E elem) {
-        for (Node<E> x = first; x != null; x = x.next) {
-            if (x.item.equals(elem)) {
-                return true;
-            }
-        }
-        return false;
+        return head <= tail ? inside(head, tail, elem) : inside(0, tail, elem) || inside(head, queue.length - 1, elem);
     }
 
     /**
@@ -55,28 +93,19 @@ public class CircleQueue<E> implements Queue<E> {
      */
     @Override
     public E poll() {
-        final E elem = first();
-        final Node<E> next = first.next;
-        first.item = null;
-        first.next = null;
-        first = next;
-        if (next == null) {
-            last = null;
-        } else {
-            next.prev = null;
+        if (empty()) {
+            throw new NoSuchElementException("Queue is empty");
         }
-        return elem;
+        E result = queue[head];
+        head = (head + 1) % queue.length;
+        count--;
+        return result;
     }
 
-    private static class Node<E> {
-        E item;
-        Node<E> next;
-        Node<E> prev;
-
-        Node(Node<E> prev, E element, Node<E> next) {
-            this.item = element;
-            this.next = next;
-            this.prev = prev;
-        }
+    /**
+     * @return {@code true} if this queue is empty
+     */
+    private boolean empty() {
+        return count == 0;
     }
 }
