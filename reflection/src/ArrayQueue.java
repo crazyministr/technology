@@ -10,6 +10,7 @@ public class ArrayQueue<E> implements Queue<E> {
         this(42);
     }
 
+    @SuppressWarnings("unchecked")
     public ArrayQueue(int size) {
         head = 0;
         tail = 0;
@@ -28,6 +29,7 @@ public class ArrayQueue<E> implements Queue<E> {
         }
         queue[tail] = elem;
         tail = (tail + 1) % queue.length;
+        count++;
     }
 
     /**
@@ -81,6 +83,7 @@ public class ArrayQueue<E> implements Queue<E> {
         }
         E q = queue[head];
         head = (head + 1) % queue.length;
+        count--;
         return q;
     }
 

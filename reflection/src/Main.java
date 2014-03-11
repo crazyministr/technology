@@ -33,14 +33,15 @@ public class Main {
         Class<? extends Queue> clazz = object.getClass();
         Random rnd = new Random();
         long start = System.currentTimeMillis();
+
         for (int i = 0; i < size; i++) {
-            clazz.getClass().getMethod("add", Object.class).invoke(object, rnd.nextInt(13));
+            clazz.getMethod("add", Object.class).invoke(object, rnd.nextInt(13));
         }
         for (int i = 0; i < size; i++) {
             clazz.getMethod("first").invoke(object);
         }
         for (int i = 0; i < size; i++) {
-            clazz.getMethod("contains", Queue.class).invoke(object, rnd.nextInt(13));
+            clazz.getMethod("contains", Object.class).invoke(object, rnd.nextInt(13));
         }
         for (int i = 0; i < size; i++) {
             clazz.getMethod("poll").invoke(object);
@@ -58,9 +59,10 @@ public class Main {
                 System.out.println("[ERROR] Argument #2 not found");
                 return;
             }
+            int count = Integer.parseInt(args[1]);
             Class<? extends Queue> clazz = ArrayQueue.class;
-            Queue<Integer> object = (Queue<Integer>) clazz.getConstructor(int.class).newInstance(Integer.parseInt(args[1]));
-            System.out.println("ArrayQueue: " + run(object, Integer.parseInt(args[1])) + " ms");
+            Queue<Integer> object = (Queue<Integer>) clazz.getConstructor(int.class).newInstance(count);
+            System.out.println("ArrayQueue: " + run(object, count) + " ms");
         } else if (args[0].equals("CircleQueue")) {
             Class<? extends Queue> clazz = CircleQueue.class;
             Queue<Integer> object = (Queue<Integer>) clazz.newInstance();

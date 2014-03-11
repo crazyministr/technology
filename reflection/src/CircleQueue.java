@@ -11,6 +11,7 @@ public class CircleQueue<E> implements Queue<E> {
         this(42);
     }
 
+    @SuppressWarnings("unchecked")
     public CircleQueue(int size) {
         head = 0;
         tail = 0;
@@ -21,6 +22,7 @@ public class CircleQueue<E> implements Queue<E> {
     /**
      * Creates a new array to store the contents of the queue with twice the capacity of the old one.
      */
+    @SuppressWarnings("unchecked")
     private void resize() {
         E[] newArray = (E[]) new Object[queue.length << 1];
         for (int i = 0; i < count; i++) {
