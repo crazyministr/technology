@@ -1,3 +1,13 @@
 95 9.5 Audi A6
 ДТ 9.4 BMW 530D
 95 17.0 Chevrolet Tahoe 5.7 V8 4WD
+ДТ 10.9 SEAT Cordoba Sport
+98 19.0 Porsche Cayenne
+ДТ 8.7 Audi Q5 TDI
+92 11 ГАЗ Баргузин
+95 12.2 Chevrolet Tahoe
+95 8.3 Chevrolet Cruze 1.6 AT
+95 6.6 Toyota Corolla 1.6
+95 7.8 Toyota Camry 2.5
+ДТ 6.5 Toyota RAV4 2.2 Diesel
+95 9.7 LADA 4x4

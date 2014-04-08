@@ -26,13 +26,12 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Main class calculate the amount spent on fuel in the year
  */
 public class CalculateCostFuel extends JFrame {
-    private boolean DEBUG = false;
-
     private ArrayList<Data> data;
 
     private JComboBox<String> selectList;
@@ -42,6 +41,7 @@ public class CalculateCostFuel extends JFrame {
     private JTextField countMileageField;
 
     private JLabel answer;
+    private String[] brands;
 
     public CalculateCostFuel() throws FileNotFoundException {
         super("Расчёт стоимости топлива");
@@ -59,17 +59,8 @@ public class CalculateCostFuel extends JFrame {
      * @throws FileNotFoundException
      */
     private JComponent createWidget() throws FileNotFoundException {
-        Reader reader = new Reader("data.txt");
-        data = reader.getData();
-        String[] brands = new String[data.size()];
-        for (int i = 0; i < data.size(); i++) {
-            brands[i] = data.get(i).getBrand();
-        }
-        if (DEBUG) {
-            for (Data d: data) {
-                System.out.println(d.getTypeFuel() + ", " + d.getCountFuel() + ", " + d.getBrand());
-            }
-        }
+        data = new ArrayList<Data>();
+        brands = new String[0];
 
         /**
          * Create panels
@@ -84,7 +75,8 @@ public class CalculateCostFuel extends JFrame {
         JLabel brandLabel = new JLabel("Марка автомобиля:");
         brandLabel.setHorizontalAlignment(SwingConstants.RIGHT);
 
-        costLabel = new JLabel(genText(data.get(0).getTypeFuel()));
+//        costLabel = new JLabel(genText(data.get(0).getTypeFuel()));
+        costLabel = new JLabel("");
         costLabel.setHorizontalAlignment(SwingConstants.RIGHT);
 
         JLabel yearMileageLabel = new JLabel("Годовой пробег:");
@@ -120,6 +112,7 @@ public class CalculateCostFuel extends JFrame {
         insidePanel.add(calculate);
         insidePanel.add(answer);
 
+        new ComboBoxContentLoader().execute();
         return mainPanel;
     }
 
@@ -191,9 +184,6 @@ public class CalculateCostFuel extends JFrame {
                 answer.setText("");
                 return;
             }
-            if (DEBUG) {
-                System.out.println(costFuel + " " + countMileage);
-            }
             String select = (String) selectList.getSelectedItem();
             double countFuel = 0.0;
             for (Data d: data) {
@@ -221,6 +211,41 @@ public class CalculateCostFuel extends JFrame {
                         break;
                     }
                 }
+            }
+        }
+    }
+
+    private class ComboBoxContentLoader extends SwingWorker<ArrayList<Data>, Void> {
+
+        /**
+         * Reading data, sleep some milliseconds
+         *
+         * @return read data
+         * @throws Exception
+         */
+        @Override
+        protected ArrayList<Data> doInBackground() throws Exception {
+            Reader reader = new Reader("data.txt");
+            Thread.sleep(2113);
+            return reader.getData();
+        }
+
+        /**
+         * get data and change the comboBox
+         */
+        protected void done() {
+            try {
+                data = get();
+                brands = new String[data.size()];
+                for (int i = 0; i < data.size(); i++) {
+                    brands[i] = data.get(i).getBrand();
+                    selectList.addItem(brands[i]);
+                }
+                costLabel.setText(genText(data.get(0).getTypeFuel()));
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
             }
         }
     }
