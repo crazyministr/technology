@@ -1,0 +1,54 @@
+body, html {
+	height: 100%;
+	margin: 0px;
+	padding: 0px;
+}
+
+.full {
+	height: 50px;
+	width: 100%;
+	text-align: center;
+	background: #888;
+	color: #fff;
+}
+
+.full h1 {
+	margin: 0px;
+}
+
+.main {
+	/*overflow: hidden;*/
+	background: yellow;
+	height: 100%;
+	position: relative;
+}
+
+.left {
+	border-right: 5px solid #888;
+	width: 200px;
+	float: left;
+	background: #fff;
+	height: 100%;
+	position: relative;
+	top: 0;
+	bottom: 0;
+}
+
+.right {
+	margin-left: 205px;
+}
+
+.right img {
+	float: right;
+	margin: 0px 0px 5px 5px;
+}
+
+.right p {
+	margin: 0px;
+	padding: 10px 0px;
+}
+
+.footer {
+	position: fixed;
+	bottom: 0;
+}
