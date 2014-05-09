@@ -1,19 +1,25 @@
 .timer_div {
-	width: 280px;
-	height: 170px;
-	font-size: 100pt;
-	color: #FFFFFF;
-	background-color: gray;
-	text-align: center;
-	position: absolute;
+    width: 280px;
+    height: 170px;
+    font-size: 100pt;
+    color: #FFFFFF;
+    background-color: gray;
+    text-align: center;
+    position: absolute;
 }
 
 .help {
-	position: absolute;
-	text-align: center;
+    position: absolute;
+    text-align: center;
+    padding: 7px 14px;
 }
 
 .restart-button {
-	position: absolute;
-	text-align: center;
+    position: relative;
+    text-align: center;
+    color: white;
+    background-color: #4d90fe;
+    border-width: 1;
+    padding: 7px 14px;
+    font-size: 14px;
 }

@@ -25,7 +25,7 @@ function init() {
     for (var num = 0; num < COUNT_RECTANGLES; num++) {
         var newRectangleDiv = document.createElement("div");
 
-        var color = '#' + Math.round(0xffffff * Math.random()).toString(16);
+        var color = '#' + Math.round(0xdddddd * Math.random() + 0x111111).toString(16);
         console.log(color);
         var widthRectangle = Math.round(300 * Math.random()) + 21;
         var heightRectangle = Math.round(150 * Math.random()) + 21;
@@ -68,8 +68,6 @@ function init() {
 }
 
 function checkIntersection() {
-    // BUG IS HERE
-    // and may be no
     for (var i = 0; i < COUNT_RECTANGLES; i++)
         if (!removed[i])
             for (var j = 0; j < COUNT_RECTANGLES; j++)
